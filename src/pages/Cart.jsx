@@ -16,20 +16,14 @@ const Cart = () => {
 
       <div className="cartWrapper">
         {products.length === 0 ? (
-          <h4>Cart is empty</h4>
+          <h4 style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '2rem'}}>Cart is empty</h4>
         ) : (
           products.map((product) => (
-            <div className="cartCard" key={product.id}>
+            <div className="cartCard" key={product._id}>
               <img src={product.image} alt="" />
               <h5>{product.title}</h5>
-
-              {/* quantity logic later add karenge */}
-              <button className="btn">-</button>
-              <span>1</span>
-              <button className="btn">+</button>
-
               <button
-                onClick={() => handleDelete(product.id)}
+                onClick={() => handleDelete(product._id)}
                 className="btn"
               >
                 Delete
