@@ -19,7 +19,9 @@ const productSlice = createSlice({
         setProducts(state, action){
             state.data = action.payload;
         },
-        
+        setStatus(state, action) {
+            state.status = action.payload;
+        }
     }
 })
 
@@ -33,7 +35,7 @@ export function fetchProducts() {
         try {
             const res = await fetch('https://fakestoreapiserver.reactbd.org/api/products');
             const data = await res.json();
-            dispatch(setProducts(data));
+            dispatch(setProducts(data.data));
             dispatch(setStatus(STATUSES.IDLE));
         } catch (err) {
             console.log(err);
