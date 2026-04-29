@@ -1,5 +1,3 @@
-import { data } from "react-router-dom";
-
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 
