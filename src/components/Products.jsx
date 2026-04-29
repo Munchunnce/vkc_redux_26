@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../store/cartSlice';
-import { fetchProducts } from '../store/productSlice';
+import { fetchProducts, STATUSES } from '../store/productSlice';
 
 const Products = () => {
   // const [products, setProducts] = useState([]);
@@ -24,6 +24,12 @@ const Products = () => {
     dispatch(add(product));
   }
 
+  if(status === STATUSES.LOADING) {
+    return <h2>Loading...</h2>
+  }
+  if(status === STATUSES.ERROR) {
+    return <h2>Something went wrong...</h2>
+  }
   return (
     <div className='productsWrapper'>
       {
