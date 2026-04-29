@@ -1,9 +1,11 @@
-const { createSlice } = require("@reduxjs/toolkit");
+import { data } from "react-router-dom";
+
+const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 
 // const initialState = [];
 
-const STATUSES = Object.freeze({
+export const STATUSES = Object.freeze({
     IDLE: 'idle',
     ERROR: 'error',
     LOADING: 'loading'
@@ -16,12 +18,25 @@ const productSlice = createSlice({
         status: STATUSES.IDLE,
     },
     reducers: {
-        setProducts(state, action){
+        // setProducts(state, action){
+        //     state.data = action.payload;
+        // },
+        // setStatus(state, action) {
+        //     state.status = action.payload;
+        // }
+    },
+    extraReducers: (builder) => {
+        builder
+        .addCase(fetchProducts.pending, (state, action) => {
+            state.status = STATUSES.LOADING;
+        })
+        .addCase(fetchProducts.fulfilled, (state, action) => {
             state.data = action.payload;
-        },
-        setStatus(state, action) {
-            state.status = action.payload;
-        }
+            state.status = STATUSES.IDLE;
+        })
+        .addCase(fetchProducts.rejected, (state, action) => {
+            state.status = STATUSES.ERROR;
+        })
     }
 })
 
@@ -29,17 +44,22 @@ export const { setProducts, setStatus } = productSlice.actions;
 export default productSlice.reducer;
 
 // Thunk
-export function fetchProducts() {
-    return async function fetchProductThunk(dispatch, getState) {
-        dispatch(setStatus(STATUSES.LOADING));
-        try {
-            const res = await fetch('https://fakestoreapiserver.reactbd.org/api/products');
-            const data = await res.json();
-            dispatch(setProducts(data.data));
-            dispatch(setStatus(STATUSES.IDLE));
-        } catch (err) {
-            console.log(err);
-            dispatch(STATUSES.ERROR);
-        }
-    }
-}
+export const fetchProducts = createAsyncThunk('products/fetch', async () => {
+    const res = await fetch('https://fakestoreapiserver.reactbd.org/api/products');
+    const data = await res.json();
+    return data.data;
+})
+// export function fetchProducts() {
+//     return async function fetchProductThunk(dispatch, getState) {
+//         dispatch(setStatus(STATUSES.LOADING));
+//         try {
+//             const res = await fetch('https://fakestoreapiserver.reactbd.org/api/products');
+//             const data = await res.json();
+//             dispatch(setProducts(data.data));
+//             dispatch(setStatus(STATUSES.IDLE));
+//         } catch (err) {
+//             console.log(err);
+//             dispatch(STATUSES.ERROR);
+//         }
+//     }
+// }
