@@ -14,4 +14,11 @@ const store = configureStore({
     }
 })
 
+// Persist config
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["cart"], // only cart will be persisted
+};
+
 export default store;
