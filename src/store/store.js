@@ -7,7 +7,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage
 import { combineReducers } from "redux";
 
 
-const store = configureStore({
+const rootReducer = configureStore({
     reducer: {
         cart: cartReducer,
         product: productReducer,
@@ -21,4 +21,19 @@ const persistConfig = {
   whitelist: ["cart"], // only cart will be persisted
 };
 
+// Persisted reducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// fix: Configure Store with middleware override
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
+export const persistor = persistStore(store);
 export default store;
