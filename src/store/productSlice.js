@@ -1,8 +1,6 @@
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 
-// const initialState = [];
-
 export const STATUSES = Object.freeze({
     IDLE: 'idle',
     ERROR: 'error',
