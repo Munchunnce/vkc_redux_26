@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="App">
       <Provider store={store}>
-        <PersistGate loading={null} persstor={persistor}>
+        <PersistGate loading={null} persistor={persistor}>
           <BrowserRouter>
           <Navbar/>
           <Routes>
